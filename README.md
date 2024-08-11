@@ -1,7 +1,3 @@
-
-Memory updated
-Here's a sample README for your RPG game project:
-
 JavaScript RPG Game
 This project is a simple Role Playing Game (RPG) built using JavaScript. The game is designed to help you learn fundamental programming concepts in JavaScript by implementing a text-based RPG. You'll explore key topics like arrays, strings, objects, functions, loops, and control flow.
 
