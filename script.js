@@ -38,7 +38,7 @@ const monsters = [
     level: 20,
     health: 300
   }
-]
+] // locations
 const locations = [
   {
     name: "town square",
@@ -87,7 +87,7 @@ function update(location) {
   button3.onclick = location["button functions"][2];
   text.innerText = location.text;
 }
-
+// location functions
 function goTown() {
   update(locations[0]);
 }
@@ -99,7 +99,7 @@ function goStore() {
 function goCave() {
   update(locations[2]);
 }
-
+// buy functions
 function buyHealth() {
   if (gold >= 10) {
     gold -= 10;
@@ -130,7 +130,7 @@ function buyWeapon() {
     button2.onclick = sellWeapon;
   }
 }
-
+// sell weapons
 function sellWeapon() {
   if (inventory.length > 1) {
     gold += 15;
@@ -142,7 +142,7 @@ function sellWeapon() {
     text.innerText = "Don't sell your only weapon!";
   }
 }
-
+// fight functions
 function fightSlime() {
   fighting = 0;
   goFight();
@@ -165,7 +165,7 @@ function goFight() {
   monsterName.innerText = monsters[fighting].name;
   monsterHealthText.innerText = monsterHealth;
 }
-
+// attack enemy
 function attack() {
   text.innerText = "The " + monsters[fighting].name + " attacks.";
   text.innerText += " You attack it with your " + weapons[currentWeaponIndex].name + ".";
@@ -179,11 +179,11 @@ function attack() {
     defeatMonster();
   }
 }
-
+// dodge enemy
 function dodge() {
   text.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
-
+// defeat enemy
 function defeatMonster() {
   gold += Math.floor(monsters[fighting].level * 6.7);
   xp += monsters[fighting].level;
@@ -191,7 +191,7 @@ function defeatMonster() {
   xpText.innerText = xp;
   update(locations[4]);
 }
-
+// die
 function lose() {
   update(locations[5]);
 }
