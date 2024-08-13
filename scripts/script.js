@@ -40,6 +40,8 @@ const locations = [
   { name: "fight", buttonText: ["Attack", "Dodge", "Run"], buttonFunctions: [attack, dodge, run], text: "You are fighting a monster." },
   { name: "kill monster", buttonText: ["Go to town square", "Go to town square", "Go to town square"], buttonFunctions: [goTown, goTown, goTown], text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.' },
   { name: "lose", buttonText: ["Restart"], buttonFunctions: [restart], text: "You have been defeated. Try again!" }
+  { name: "win", "button text": ["REPLAY?", "REPLAY?", "REPLAY?"], "button functions": [restart, restart, restart], text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;" },
+  { name: "easter egg", "button text": ["2", "8", "Go to town square?"], "button functions": [pickTwo, pickEight, goTown], text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!" }
 ];
 
 // Create audio elements
