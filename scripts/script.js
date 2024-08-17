@@ -1,4 +1,3 @@
-// Define initial game variables
 let xp = 0;
 let health = 100;
 let gold = 50;
@@ -7,7 +6,6 @@ let fighting;
 let monsterHealth;
 let inventory = ["stick"];
 
-// DOM elements
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
@@ -18,21 +16,29 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
-
-// Weapons and monsters data
 const weapons = [
   { name: 'stick', power: 5 },
   { name: 'dagger', power: 30 },
   { name: 'claw hammer', power: 50 },
   { name: 'sword', power: 100 }
 ];
-
 const monsters = [
-  { name: "slime", level: 2, health: 15 },
-  { name: "fanged beast", level: 8, health: 60 },
-  { name: "dragon", level: 20, health: 300 }
+  {
+    name: "slime",
+    level: 2,
+    health: 15
+  },
+  {
+    name: "fanged beast",
+    level: 8,
+    health: 60
+  },
+  {
+    name: "dragon",
+    level: 20,
+    health: 300
+  }
 ];
-
 const locations = [
   { name: "town square", buttonText: ["Go to store", "Go to cave", "Fight dragon"], buttonFunctions: [goStore, goCave, fightDragon], text: "You are in the town square. You see a sign that says \"Store\"." },
   { name: "store", buttonText: ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"], buttonFunctions: [buyHealth, buyWeapon, goTown], text: "You enter the store." },
@@ -92,46 +98,42 @@ function initializeButtons() {
   button3.onclick = fightDragon;
 }
 
-// Update UI based on the current location
 function update(location) {
   monsterStats.style.display = "none";
-  button1.innerText = location.buttonText[0];
-  button2.innerText = location.buttonText[1];
-  button3.innerText = location.buttonText[2];
-  button1.onclick = location.buttonFunctions[0];
-  button2.onclick = location.buttonFunctions[1];
-  button3.onclick = location.buttonFunctions[2];
-  text.innerText = location.text;
+  button1.innerText = location["button text"][0];
+  button2.innerText = location["button text"][1];
+  button3.innerText = location["button text"][2];
+  button1.onclick = location["button functions"][0];
+  button2.onclick = location["button functions"][1];
+  button3.onclick = location["button functions"][2];
+  text.innerHTML = location.text;
 }
 
-// Location functions
 function goTown() {
-  stopBackgroundMusic();
-  playSound('town', true); // Play town music
   update(locations[0]);
+  townSound.play(); // Play town sound
+  caveSound.pause(); // Pause cave sound if it's playing
 }
 
 function goStore() {
-  stopBackgroundMusic();
-  playSound('store'); // Play store music
-  audio.store.onended = () => { // Play town music after store.mp3 ends
-    playSound('town', true);
-  };
   update(locations[1]);
+  townSound.pause(); // Pause town sound if it's playing
+  caveSound.pause(); // Pause cave sound if it's playing
 }
 
 function goCave() {
-  stopBackgroundMusic();
-  playSound('cave', true); // Play cave music
   update(locations[2]);
+  caveSound.loop = true; // Loop cave sound
+  caveSound.play(); // Play cave sound
+  townSound.pause(); // Pause town sound if it's playing
 }
 
-// Buy functions
 function buyHealth() {
   if (gold >= 10) {
     gold -= 10;
     health += 10;
-    updateStats();
+    goldText.innerText = gold;
+    healthText.innerText = health;
   } else {
     text.innerText = "You do not have enough gold to buy health.";
   }
@@ -142,10 +144,11 @@ function buyWeapon() {
     if (gold >= 30) {
       gold -= 30;
       currentWeapon++;
+      goldText.innerText = gold;
       let newWeapon = weapons[currentWeapon].name;
+      text.innerText = "You now have a " + newWeapon + ".";
       inventory.push(newWeapon);
-      text.innerText = `You now have a ${newWeapon}. In your inventory you have: ${inventory.join(', ')}.`;
-      updateStats();
+      text.innerText += " In your inventory you have: " + inventory;
     } else {
       text.innerText = "You do not have enough gold to buy a weapon.";
     }
@@ -159,32 +162,31 @@ function buyWeapon() {
 function sellWeapon() {
   if (inventory.length > 1) {
     gold += 15;
-    let soldWeapon = inventory.shift();
-    text.innerText = `You sold a ${soldWeapon}. In your inventory you have: ${inventory.join(', ')}.`;
-    updateStats();
+    goldText.innerText = gold;
+    let currentWeapon = inventory.shift();
+    text.innerText = "You sold a " + currentWeapon + ".";
+    text.innerText += " In your inventory you have: " + inventory;
   } else {
     text.innerText = "Don't sell your only weapon!";
   }
 }
 
-// Fight functions
 function fightSlime() {
-  startFight(0, 'slime');
+  fighting = 0;
+  goFight();
+  slimeSound.play(); // Play slime sound
 }
 
 function fightBeast() {
-  startFight(1, 'beast');
+  fighting = 1;
+  goFight();
+  beastSound.play(); // Play beast sound
 }
 
 function fightDragon() {
-  startFight(2, 'dragon');
-}
-
-function startFight(monsterIndex, sound) {
-  stopBackgroundMusic();
-  playSound(sound); // Play monster-specific sound
-  fighting = monsterIndex;
+  fighting = 2;
   goFight();
+  dragonSound.play(); // Play dragon sound
 }
 
 function goFight() {
@@ -195,20 +197,18 @@ function goFight() {
   monsterHealthText.innerText = monsterHealth;
 }
 
-// Attack enemy
 function attack() {
-  playSound('attack');  // Play attack sound
-  text.innerText = `The ${monsters[fighting].name} attacks. You attack it with your ${weapons[currentWeapon].name}.`;
+  text.innerText = "The " + monsters[fighting].name + " attacks.";
+  text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
   health -= getMonsterAttackValue(monsters[fighting].level);
   if (isMonsterHit()) {
     monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;    
   } else {
     text.innerText += " You miss.";
   }
-  updateStats();
+  healthText.innerText = health;
+  monsterHealthText.innerText = monsterHealth;
   if (health <= 0) {
-    stopBackgroundMusic();
-    playSound('lose');
     lose();
   } else if (monsterHealth <= 0) {
     if (fighting === 2) {
@@ -218,13 +218,14 @@ function attack() {
     }
   }
   if (Math.random() <= .1 && inventory.length !== 1) {
-    text.innerText += ` Your ${inventory.pop()} breaks.`;
+    text.innerText += " Your " + inventory.pop() + " breaks.";
     currentWeapon--;
   }
 }
 
 function getMonsterAttackValue(level) {
-  const hit = (level * 5) - Math.floor(Math.random() * xp);
+  const hit = (level * 5) - (Math.floor(Math.random() * xp));
+  console.log(hit);
   return hit > 0 ? hit : 0;
 }
 
@@ -232,28 +233,20 @@ function isMonsterHit() {
   return Math.random() > .2 || health < 20;
 }
 
-// Dodge enemy
 function dodge() {
-  playSound('dodge');  // Play dodge sound
-  text.innerText = `You dodge the attack from the ${monsters[fighting].name}.`;
+  text.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
 
-// Run away
-function run() {
-  playSound('run');  // Play run sound
-  goTown();
-}
-
-// Defeat enemy
 function defeatMonster() {
   gold += Math.floor(monsters[fighting].level * 6.7);
   xp += monsters[fighting].level;
-  updateStats();
+  goldText.innerText = gold;
+  xpText.innerText = xp;
   update(locations[4]);
 }
 
-// Game over
 function lose() {
+  loseSound.play(); // Play lose sound
   update(locations[5]);
 }
 
@@ -267,7 +260,9 @@ function restart() {
   gold = 50;
   currentWeapon = 0;
   inventory = ["stick"];
-  updateStats();
+  goldText.innerText = gold;
+  healthText.innerText = health;
+  xpText.innerText = xp;
   goTown();
 }
 
