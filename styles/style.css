@@ -1,45 +1,81 @@
+/* style.css */
 body {
-  background-color: #0a0a23;
-}
-
-#text {
-  background-color: #0a0a23;
+  font-family: Arial, sans-serif;
+  background-color: #282828;
   color: #ffffff;
-  padding: 10px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 #game {
-  max-width: 500px;
-  max-height: 400px;
-  background-color: #ffffff;
-  color: #ffffff;
-  margin: 30px auto 0px;
-  padding: 10px;
+  width: 600px;
+  text-align: center;
 }
 
-#controls,
 #stats {
-  border: 1px solid #0a0a23;
-  padding: 5px;
-  color: #0a0a23;
-}
-
-#monsterStats {
-  display: none;
-  border: 1px solid #0a0a23;
-  padding: 5px;
-  color: #ffffff;
-  background-color: #c70d0d;
+  margin-bottom: 20px;
 }
 
 .stat {
-  padding-right: 10px;
+  display: block;
+  margin-bottom: 5px;
 }
 
-button {
+#locationContainer {
+  position: relative;
+  width: 500px;
+  height: 225px;
+  margin: 0 auto;
+}
+
+#locationImage, #locationVideo {
+  width: 100%;
+  height: 100%;
+  display: none; /* Hide by default */
+  background-color: #000;
+}
+
+#locationImage.show, #locationVideo.show {
+  display: block;
+}
+
+#controls {
+  margin: 20px 0;
+}
+
+#controls button {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
   cursor: pointer;
-  color: #0a0a23;
-  background-color: #feac32;
-  background-image: linear-gradient(#fecc4c, #ffac33);
-  border: 3px solid #feac32;
+  font-size: 1rem;
+}
+
+#controls button:hover {
+  background-color: #666;
+}
+
+#monsterStats {
+  margin: 20px 0;
+}
+
+#text {
+  font-size: 1.2rem;
+}
+
+#locationVideo {
+  width: 100%;
+  height: auto; /* Adjust the height as needed */
+  display: none; /* Initially hidden, show when needed */
+  object-fit: cover; /* Ensure the video covers the area */
+}
+
+#locationVideo::-webkit-media-controls {
+  display: none !important; /* Hide controls in WebKit browsers */
 }
