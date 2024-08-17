@@ -7,6 +7,17 @@
   </head>
   <body>
     <div id="game">
+      <!-- Canvas containers above the controls -->
+      <div id="canvas1" class="canvas-container">
+        <canvas id="canvas1"></canvas>
+      </div>
+      <div id="canvas2" class="canvas-container">
+        <canvas id="canvas2"></canvas>
+      </div>
+      <div id="canvas3" class="canvas-container">
+        <canvas id="canvas3"></canvas>
+      </div>
+
       <div id="stats">
         <span class="stat"
           >XP: <strong><span id="xpText">0</span></strong></span
@@ -18,11 +29,13 @@
           >Gold: <strong><span id="goldText">50</span></strong></span
         >
       </div>
+
       <div id="controls">
         <button id="button1">Go to store</button>
         <button id="button2">Go to cave</button>
         <button id="button3">Fight dragon</button>
       </div>
+
       <div id="monsterStats">
         <span class="stat"
           >Monster Name: <strong><span id="monsterName"></span></strong
@@ -31,6 +44,7 @@
           >Health: <strong><span id="monsterHealth"></span></strong
         ></span>
       </div>
+
       <div id="text">
         Welcome to Dragon Repeller. You must defeat the dragon that is
         preventing people from leaving the town. You are in the town square.

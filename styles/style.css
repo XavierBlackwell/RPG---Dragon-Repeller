@@ -1,5 +1,7 @@
 body {
   background-color: #0a0a23;
+  margin: 0; /* Reset margin to prevent unwanted space */
+  padding: 0; /* Reset padding */
 }
 
 #text {
@@ -10,18 +12,68 @@ body {
 
 #game {
   max-width: 500px;
-  max-height: 400px;
   background-color: #ffffff;
   color: #ffffff;
   margin: 30px auto 0px;
   padding: 10px;
+  position: relative; /* Allows absolute positioning of children */
+  border: 5px solid #0a0a23; /* Adds a border around the whole game area */
+  border-radius: 10px; /* Rounds corners for a more polished look */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adds shadow for a 3D effect */
 }
 
-#controls,
+.canvas-container {
+  /* Position canvases relative to the #game container */
+  top: 0;
+  left: 0;
+  width: 490px; /* Full width of the #game container */
+   /* Fixed height for the canvas container */
+  pointer-events: none; /* Ensures canvases don't interfere with button clicks */
+  z-index: 1; /* Ensures canvases are below other content */
+  background-color: #000; /* Background color of the canvas area */
+  border: 5px solid #0a0a23; /* Border to make it look like a separate screen */
+  border-radius: 10px; /* Rounds corners of the canvas area */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adds shadow for a 3D effect */
+  display: none; /* Hide canvases by default */
+   /* Ensure positioning is correct */
+}
+
+/* Ensure canvases scale to fit the container */
+.canvas-container canvas {
+  width: 100%;
+  height: 100%;
+  display: block; /* Removes default inline-block spacing */
+}
+
+#canvas1 {
+  display: block; /* Show canvas1 by default */
+}
+
+#canvas2,
+#canvas3 {
+  display: none; /* Hide canvas2 and canvas3 by default */
+}
+
+#controls {
+  position: relative; /* Position controls relative to the #game container */
+  width: 100%; /* Full width of the #game container */
+  text-align: center; /* Center align buttons */
+  background-color: #ffffff; /* Background color for the controls section */
+  border-top: 1px solid #0a0a23; /* Border on top of controls */
+  padding: 10px 0; /* Padding for controls */
+}
+
+#stats, #monsterStats, #text {
+  position: relative;
+  text-align: center;
+  margin-top: 10px; /* Add space above these sections if needed */
+}
+
 #stats {
   border: 1px solid #0a0a23;
   padding: 5px;
   color: #0a0a23;
+  background-color: #ffffff; /* Ensure stats have a background color for visibility */
 }
 
 #monsterStats {

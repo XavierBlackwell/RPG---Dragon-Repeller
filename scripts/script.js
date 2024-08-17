@@ -39,7 +39,7 @@ const locations = [
   { name: "cave", buttonText: ["Fight slime", "Fight fanged beast", "Go to town square"], buttonFunctions: [fightSlime, fightBeast, goTown], text: "You enter the cave. You see some monsters." },
   { name: "fight", buttonText: ["Attack", "Dodge", "Run"], buttonFunctions: [attack, dodge, run], text: "You are fighting a monster." },
   { name: "kill monster", buttonText: ["Go to town square", "Go to town square", "Go to town square"], buttonFunctions: [goTown, goTown, goTown], text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.' },
-  { name: "lose", buttonText: ["Restart"], buttonFunctions: [restart], text: "You have been defeated. Try again!" }
+  { name: "lose", buttonText: ["Restart", "Restart", "Restart"], buttonFunctions: [restart, restart, restart], text: "You have been defeated. Try again!" }
 ];
 
 // Create audio elements
@@ -79,18 +79,14 @@ function stopBackgroundMusic() {
   }
 }
 
-// Initialize background music for town and cave
+// Initialize background music
 function initializeBackgroundMusic() {
+  stopBackgroundMusic(); // Stop any previously playing background music
   playSound('town', true); // Play town music on loop
 }
 
 // Initialize buttons
 function initializeButtons() {
-  console.log('Initializing buttons...');
-  console.log('Button1:', button1);
-  console.log('Button2:', button2);
-  console.log('Button3:', button3);
-
   button1.onclick = goStore;
   button2.onclick = goCave;
   button3.onclick = fightDragon;
@@ -276,50 +272,22 @@ function restart() {
 }
 
 // Easter egg functions
-function easterEgg() {
-  update(locations[7]);
-}
-
-function pickTwo() {
-  pick(2);
-}
-
-function pickEight() {
-  pick(8);
-}
-
-function pick(guess) {
-  const numbers = Array.from({ length: 10 }, () => Math.floor(Math.random() * 11));
-  text.innerText = `You picked ${guess}. Here are the random numbers:\n${numbers.join('\n')}\n`;
-  if (numbers.includes(guess)) {
-    text.innerText += "Right! You win 20 gold!";
-    gold += 20;
-  } else {
-    text.innerText += "Wrong! You lose 10 health!";
-    health -= 10;
-    if (health <= 0) {
-      stopBackgroundMusic();
-      playSound('lose');
-      lose();
-    }
-  }
-  updateStats();
-}
-
-// Update stats display
 function updateStats() {
-  goldText.innerText = gold;
-  healthText.innerText = health;
-  xpText.innerText = xp;
+  xpText.innerText = `XP: ${xp}`;
+  healthText.innerText = `Health: ${health}`;
+  goldText.innerText = `Gold: ${gold}`;
 }
 
-// Initialize background music and buttons
-initializeBackgroundMusic();
-initializeButtons();
-playSound('town'); // Play town music when the app opens
 // Initialize background music and buttons
 document.addEventListener('DOMContentLoaded', () => {
   initializeBackgroundMusic();
   initializeButtons();
-  // No need to call playSound('town'); here if it's already handled in initializeBackgroundMusic
 });
+window.onload = () => {
+  const canvas1 = document.getElementById('canvas1');
+  const ctx1 = canvas1.getContext('2d');
+
+  // Example drawing
+  ctx1.fillStyle = 'blue';
+  ctx1.fillRect(10, 10, 100, 100);
+};
